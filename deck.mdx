@@ -3,94 +3,98 @@ import {
   CodeSurferColumns,
   Step,
 } from "code-surfer";
-import { github, vsDark } from "@code-surfer/themes";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
 
-export const theme = vsDark;
+export const theme = github;
 
-# Hello 👋
+# Typescript Dynamic Typing with Serverless Plugin
 
-You are using [MDX Deck](https://github.com/jxnblk/mdx-deck) and [Code Surfer](https://codesurfer.pomb.us)
+---
+
+# Frédéric Barthelet
+
+Twitter: @bartheletf
+
+Github: @fredericbarthelet
+
+<img
+  style={{
+    position: 'absolute',
+    left: '100px',
+  }}
+  src='https://cdn2.hubspot.net/hub/2383597/hubfs/Website/Team/Colored%20Only/fredericb.png'
+/>
+<img
+  style={{
+    height: '10vw',
+    position: 'absolute',
+    left: '140px',
+    bottom: '250px',
+  }}
+  src='https://cdn2.hubspot.net/hub/2383597/hubfs/Website/Logos/Logo_Theodo_cropped.svg'
+/>
+
+---
+
+<img
+  style={{
+    height: '10vw',
+  }}
+  src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1200px-Amazon_Web_Services_Logo.svg.png'
+/>
+<div
+  style={{
+    display: 'flex',
+    'justifyContent': 'flex-around',
+  }}
+>
+  <img
+    style={{
+      height: '10vw',
+      margin: '100px',
+    }}
+    src='https://user-images.githubusercontent.com/2752551/30405068-a7733b34-989e-11e7-8f66-7badaf1373ed.png'
+  />
+  <img
+    style={{
+      height: '10vw',
+      margin: '100px',
+    }}
+    src='https://cdn.worldvectorlogo.com/logos/typescript.svg'
+  />
+</div>
+
+---
+
+Static typing -> Dynamic typing
+
+@ API Gateway HTTP request body
 
 ---
 
 <CodeSurfer>
 
-```js title="This is a title" subtitle="and this a subtitle"
-function lorem(ipsum, dolor = 1) {
-  const sit = ipsum == null ? 0 : ipsum.sit;
-  dolor = sit - amet(dolor);
-  return sit
-    ? consectetur(ipsum, 0, dolor < 0 ? 0 : dolor)
-    : [];
-}
-
-function incididunt(ipsum, ut = 1) {
-  ut = labore.et(amet(ut), 0);
-  const sit = ipsum == null ? 0 : ipsum.sit;
-
-  if (!sit || ut < 1) {
-    return [];
-  }
-
-  let dolore = 0;
-  let magna = 0;
-  const aliqua = new eiusmod(labore.ut(sit / ut));
-
-  while (dolore < sit) {
-    aliqua[magna++] = consectetur(
-      ipsum,
-      dolore,
-      (dolore += ut)
-    );
-  }
-
-  return aliqua;
+```ts title="Basic API Gateway HTTP lambda example"
+export const hello = (event) => {
+    const body = JSON.parse(event.body);
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            message: `${body.framework} is awesome`
+        }),
+    };
 }
 ```
 
-```js
-function lorem(ipsum, dolor = 1) {
-  const sit = ipsum == null ? 0 : ipsum.sit;
-  dolor = sit - amet(dolor);
-  return sit
-    ? consectetur(ipsum, 0, dolor < 0 ? 0 : dolor)
-    : [];
-}
+```diff 1[23:27] title="Basic API Gateway HTTP lambda example" subtitle="event is lambda proxy input from API Gateway"
 
-function adipiscing(...elit) {
-  if (!elit.sit) {
-    return [];
-  }
-
-  const sed = elit[0];
-  return eiusmod.tempor(sed) ? sed : [sed];
-}
-
-function incididunt(ipsum, ut = 1) {
-  ut = labore.et(amet(ut), 0);
-  const sit = ipsum == null ? 0 : ipsum.sit;
-
-  if (!sit || ut < 1) {
-    return [];
-  }
-
-  let dolore = 0;
-  let magna = 0;
-  const aliqua = new eiusmod(labore.ut(sit / ut));
-
-  while (dolore < sit) {
-    aliqua[magna++] = consectetur(
-      ipsum,
-      dolore,
-      (dolore += ut)
-    );
-  }
-
-  return aliqua;
-}
 ```
 
-```diff 1[10:14],2[15:19],3[22:27],10:12
+```diff 2,6 title="Basic API Gateway HTTP lambda example" subtitle="looking for framework body payload"
+
+```
+
+```diff 6[23:50] title="Basic API Gateway HTTP lambda example" subtitle="undefined is awesome"
 
 ```
 
@@ -98,48 +102,119 @@ function incididunt(ipsum, ut = 1) {
 
 ---
 
-<CodeSurferColumns themes={[vsDark, github]}>
+<CodeSurfer>
 
-<Step>
+```ts title="Switching to Typescript"
+interface MyPayload {
+  framework: string;
+}
 
-```js
-const magna = aliqua => aliqua.ut((enim, ad) => enim, 0);
+export const hello = (event) => {
+    const body = JSON.parse(event.body) as MyPayload;
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            message: `${body.framework} is awesome`
+        }),
+    };
+}
 ```
 
-```js
-const minim = (ad, enim) => dolore.magna(ad / enim);
+```diff 1:3 title="Switching to Typescript" subtitle="creating body input interface"
+
 ```
 
-</Step>
+```diff 6 title="Switching to Typescript" subtitle="typing JSON.parse return value"
 
-<Step>
-
-```js
-const lorem = (ipsum, dolor, sit) => {
-  const amet = dolor - ipsum;
-  return consectetur.adipiscing(
-    {
-      elit: sed.eiusmod(sit - dolor) / amet + 2,
-    },
-    (tempor, incididunt) => ipsum + amet * incididunt
-  );
-};
-
-const magna = aliqua => aliqua.ut((enim, ad) => enim, 0);
 ```
 
-```js
-const minim = (ad, enim) => dolore.magna(ad / enim);
+```diff 5[23:27],6[18:53]  title="Switching to Typescript" subtitle="weak Type Assertion from event"
 
-const sed = (eiusmod, tempor, incididunt) => {
-  const ut = tempor - eiusmod;
-  return labore.et(
-    {
-      amet: dolore.magna(incididunt - tempor) / ut + 2,
-    },
-    (aliqua, elit) => eiusmod + ut * elit
-  );
-};
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```yml title="Configuration of API Gateway Model"
+functions:
+  serverlessforever:
+    handler: handler.main
+    events:
+      - http:
+          method: get
+          path: framework
+```
+
+```yml title="Configuration of API Gateway Model" subtitle="adding JSON-Schema request validation"
+functions:
+  serverlessforever:
+    handler: handler.main
+    events:
+      - http:
+          method: get
+          path: framework
+          request:
+            schema:
+              application/json: ${file(framework.json)}
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```json title="JSON Schema file matching payload TS interface"
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "framework": {
+      "type": "string"
+    }
+  },
+  "required": ["framework"]
+}
+```
+
+```diff 5:7 title="JSON Schema file matching payload TS interface" subtitle="adding framework property of type string"
+
+```
+
+```diff 9 title="JSON Schema file matching payload TS interface" subtitle="making framework property required"
+
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurferColumns>
+
+<Step title="schema duplication">
+
+```json
+# framework.json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "framework": {
+      "type": "string"
+    }
+  },
+  "required": ["framework"]
+}
+```
+
+```ts
+// handler.ts
+interface MyPayload {
+  framework: string;
+}
 ```
 
 </Step>
@@ -148,5 +223,470 @@ const sed = (eiusmod, tempor, incididunt) => {
 
 ---
 
-docs:  
-[codesurfer.pomb.us](https://codesurfer.pomb.us)
+<CodeSurferColumns>
+
+<Step title="Serverless plugins" subtitle="Serverless lifecycle">
+
+```bash
+serverless deploy
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="add some custom logic to deploy lifecycle">
+
+```ts
+class ServerlessTypescript {
+  hooks = {
+    'package:compileEvents': () => {
+      // some code
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="hook registered">
+
+```ts
+class ServerlessTypescript {
+  hooks = {
+    'package:compileEvents': () => {
+      // some code
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="new command">
+
+```ts
+class ServerlessTypescript {
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      // some code
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="spawn new command from hook">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="command spawned">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|     |_ Invoking command serverlessTypescript:apiGateway:generate
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="adding lifecycle to command">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [
+        'apiGateway:compileTypes',
+        'apiGateway:generateJsonSchema'
+        'apiGateway:updateFunctionDefinition'
+      ],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|     |_ Invoking command serverlessTypescript:apiGateway:generate
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="lifecycle new events emitted during deploy lifecycle">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [
+        'apiGateway:compileTypes',
+        'apiGateway:generateJsonSchema'
+        'apiGateway:updateFunctionDefinition'
+      ],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|     |_ Invoking command serverlessTypescript:apiGateway:generate
+|        |_ serverlessTypescript:apiGateway:compileTypes
+|        |_ serverlessTypescript:apiGateway:generateJsonSchema
+|        |_ serverlessTypescript:apiGateway:updateFunctionDefinition
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="new hooks with logic">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [
+        'apiGateway:compileTypes',
+        'apiGateway:generateJsonSchema'
+        'apiGateway:updateFunctionDefinition'
+      ],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+    'serverlessTypescript:apiGateway:compileTypes': () => {
+      // some code
+    },
+    'serverlessTypescript:apiGateway:generateJsonSchema': () => {
+      // some code
+    },
+    'serverlessTypescript:apiGateway:updateFunctionDefinition': () => {
+      // some code
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|     |_ Invoking command serverlessTypescript:apiGateway:generate
+|        |_ serverlessTypescript:apiGateway:compileTypes
+|        |_ serverlessTypescript:apiGateway:generateJsonSchema
+|        |_ serverlessTypescript:apiGateway:updateFunctionDefinition
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+
+<Step title="Serverless plugins" subtitle="hooks registered and executed">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [
+        'apiGateway:compileTypes',
+        'apiGateway:generateJsonSchema'
+        'apiGateway:updateFunctionDefinition'
+      ],
+    },
+  };
+
+  hooks = {
+    'package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+    'serverlessTypescript:apiGateway:compileTypes': () => {
+      // some code
+    },
+    'serverlessTypescript:apiGateway:generateJsonSchema': () => {
+      // some code
+    },
+    'serverlessTypescript:apiGateway:updateFunctionDefinition': () => {
+      // some code
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|     |_ Invoking command serverlessTypescript:apiGateway:generate
+|        |_ serverlessTypescript:apiGateway:compileTypes
+|        |  |_ Hook from ServerlessTypescript
+|        |_ serverlessTypescript:apiGateway:generateJsonSchema
+|        |  |_ Hook from ServerlessTypescript
+|        |_ serverlessTypescript:apiGateway:updateFunctionDefinition
+|           |_ Hook from ServerlessTypescript
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+<Step title="Serverless plugins" subtitle="ensuring context is filled before main compileEvents">
+
+```ts
+class ServerlessTypescript {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
+  }
+
+  commands = {
+    'apiGateway:generate': {
+      usage: 'Generate dynamic JSON Schema request validation models from TS types',
+      lifecycleEvents: [
+        'apiGateway:compileTypes',
+        'apiGateway:generateJsonSchema'
+        'apiGateway:updateFunctionDefinition'
+      ],
+    },
+  };
+
+  hooks = {
+    'before:package:compileEvents': () => {
+      this.serverless.pluginManager.spawn('apiGateway:generate')
+    },
+    'serverlessTypescript:apiGateway:compileTypes': () => {
+      // some code
+    },
+    'serverlessTypescript:apiGateway:generateJsonSchema': () => {
+      // some code
+    },
+    'serverlessTypescript:apiGateway:updateFunctionDefinition': () => {
+      // some code
+    },
+  };
+}
+```
+
+```bash
+deploy
+|_ package:cleanup
+|_ package:initialize
+|_ package:setupProviderConfiguration
+|_ package:createDeploymentArtifacts
+|_ package:compileFunctions
+|_ before:package:compileEvents
+|  |_ Hook from ServerlessTypescript  
+|     |_ Invoking command serverlessTypescript:apiGateway:generate
+|        |_ serverlessTypescript:apiGateway:compileTypes
+|        |  |_ Hook from ServerlessTypescript
+|        |_ serverlessTypescript:apiGateway:generateJsonSchema
+|        |  |_ Hook from ServerlessTypescript
+|        |_ serverlessTypescript:apiGateway:updateFunctionDefinition
+|           |_ Hook from ServerlessTypescript
+|_ package:compileEvents
+|_ after:package:compileEvents
+|_ deploy
+|_ finalize
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# serverless-typescript plugin
+
+https://github.com/fredericbarthelet/serverless-typescript
+
+---
+
+# Thanks
